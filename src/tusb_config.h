@@ -1,33 +1,33 @@
 #ifndef _TUSB_CONFIG_H_
 #define _TUSB_CONFIG_H_
 
+// Dictionnaire de base
+#include "tusb_option.h"
+
 #ifdef __cplusplus
  extern "C" {
 #endif
 
-// Configuration PIO-USB pour Waveshare PiZero
 #define CFG_TUSB_MCU                OPT_MCU_RP2040
 #define CFG_TUSB_OS                 OPT_OS_NONE
 
-// RHPORT0 = Port de DROITE (Natif, vers PC)
+// Port DROITE = PC | Port GAUCHE = Manette
 #define CFG_TUSB_RHPORT0_MODE       OPT_MODE_DEVICE
-
-// RHPORT1 = Port de GAUCHE (PIO, vers Manette)
 #define CFG_TUSB_RHPORT1_MODE       OPT_MODE_HOST
 #define CFG_TUH_RPI_PIO_USB         1
 
-// Pins 6 et 7 (confirmés par ton schéma)
+// Pins 6 et 7 pour Waveshare PiZero
 #define PICO_USB_HOST_DP_PIN        6
 #define PICO_USB_HOST_DM_PIN        7
 
-// Configuration Host (Manette)
+// Config Host (Entrée)
 #define CFG_TUH_HUB                 1
 #define CFG_TUH_HID                 8
 #define CFG_TUH_XINPUT              4
 #define CFG_TUH_DEVICE_MAX          (4*CFG_TUH_HUB + 1)
 #define CFG_TUH_ENUMERATION_BUFSIZE 1280
 
-// Configuration Device (Sortie Console/PC)
+// Config Device (Sortie)
 #define CFG_TUD_HID                 4
 #define CFG_TUD_XID                 1
 #define CFG_TUD_XINPUT              1
@@ -38,5 +38,4 @@
 #ifdef __cplusplus
  }
 #endif
-
 #endif
