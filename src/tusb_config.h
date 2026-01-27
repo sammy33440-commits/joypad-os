@@ -1,6 +1,7 @@
 /*
- * CONFIGURATION FORCE BRUTE - WAVESHARE PIZERO (RP2040)
- * REPLIQUE DE LA CONFIGURATION GP2040-CE (PINS 28/29)
+ * CONFIGURATION FINALE - WAVESHARE PIZERO
+ * PIN 6 (D+) et PIN 7 (D-)
+ * FORCE UNLOCK
  */
 
 #ifndef _TUSB_CONFIG_H_
@@ -11,21 +12,19 @@
 #endif
 
 // ===================================================================
-// 🚨 ACTIVATION OBLIGATOIRE (NO WIRES) 🚨
-// On force le driver PIO-USB à démarrer sur les pins 28 et 29
-// On le place EN DEHORS de tout bloc #if pour être sûr qu'il est lu.
+// 🚨 DÉMARRAGE FORCE SUR GPIO 6 et 7 🚨
 // ===================================================================
 
-// 1. On active le driver logiciel USB (PIO)
+// 1. On active le driver PIO-USB
 #define CFG_TUH_RPI_PIO_USB         1
 
-// 2. On définit les pins physiques (Ceux qui marchent sur GP2040)
+// 2. On définit les pins donnés par ton expert
 #undef PICO_USB_HOST_DP_PIN
 #undef PICO_USB_HOST_DM_PIN
-#define PICO_USB_HOST_DP_PIN        28
-#define PICO_USB_HOST_DM_PIN        29
+#define PICO_USB_HOST_DP_PIN        6  // D+
+#define PICO_USB_HOST_DM_PIN        7  // D-
 
-// 3. On force le mode "Dual" (PC sur port droit, Manette sur port gauche)
+// 3. On force le mode Dual (Manette à gauche, PC à droite)
 #define CFG_TUSB_RHPORT0_MODE       OPT_MODE_DEVICE
 #define CFG_TUSB_RHPORT1_MODE       OPT_MODE_HOST
 
@@ -42,7 +41,7 @@
 #undef CFG_TUSB_DEBUG
 #define CFG_TUSB_DEBUG           1
 
-// Mémoire et Buffers (Standard)
+// Mémoire et Buffers
 #ifndef CFG_TUD_MEM_SECTION
 #define CFG_TUD_MEM_SECTION
 #endif
@@ -73,7 +72,7 @@
 #define CFG_TUH_HID_EPIN_BUFSIZE    64
 #define CFG_TUH_HID_EPOUT_BUFSIZE   64
 
-// Buffers Device (PC)
+// Buffers Device
 #define CFG_TUD_ENDPOINT0_SIZE    64
 #define CFG_TUD_HID               4
 #define CFG_TUD_XID               1
