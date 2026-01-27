@@ -1,7 +1,5 @@
 /*
- * Joypad - Modular controller firmware for RP2040-based devices
- * CONFIGURATION SPÉCIALE POUR WAVESHARE RP2040-PIZERO
- * (Le port USB Host est sur les GPIO 6 et 7)
+ * CONFIGURATION WAVESHARE RP2040-PIZERO - PIN 10/11 FORCE
  */
 
 #ifndef _TUSB_CONFIG_H_
@@ -11,23 +9,15 @@
  extern "C" {
 #endif
 
-// -------------------------------------------------------------------
-// ZONE CRITIQUE : FORÇAGE DES PINS (WAVESHARE RP2040-PIZERO)
-// -------------------------------------------------------------------
-// On détruit la configuration par défaut (qui était 0/1 ou 28/29)
+// --- FORÇAGE ABSOLU ---
+// On efface tout doute
 #undef PICO_USB_HOST_DP_PIN
 #undef PICO_USB_HOST_DM_PIN
 
-// On impose les VRAIS pins de ta carte
-// GPIO 6 = D+ (Data Plus)
-// GPIO 7 = D- (Data Moins)
+// On impose GPIO 10 et 11
 #define PICO_USB_HOST_DP_PIN 10
 #define PICO_USB_HOST_DM_PIN 11
-// -------------------------------------------------------------------
-
-//--------------------------------------------------------------------
-// COMMON CONFIGURATION
-//--------------------------------------------------------------------
+// ----------------------
 
 #ifndef CFG_TUSB_MCU
   #error CFG_TUSB_MCU must be defined
@@ -37,16 +27,14 @@
 #if defined(DISABLE_USB_HOST)
   #define CFG_TUSB_RHPORT0_MODE       OPT_MODE_DEVICE
 #elif defined(CONFIG_USB)
-  // Dual-role USB configuration
-  // Port natif (PC/PS5) sur le port de droite
-  // Port PIO-USB (Manette) sur le port de gauche (Pins 6/7)
   #define CFG_TUSB_RHPORT0_MODE       OPT_MODE_DEVICE
   #define CFG_TUSB_RHPORT1_MODE       OPT_MODE_HOST
   #define CFG_TUH_RPI_PIO_USB         1
   
-  // Sécurité : on ré-applique le forçage ici au cas où
+  // ICI IL Y AVAIT L'ERREUR (Le 6). JE L'AI SUPPRIMÉ.
+  // On confirme juste que c'est bien 10 pour être parano :
   #undef PICO_USB_HOST_DP_PIN
-  #define PICO_USB_HOST_DP_PIN        6
+  #define PICO_USB_HOST_DP_PIN        10
 #else
   #define CFG_TUSB_RHPORT0_MODE       OPT_MODE_HOST
 #endif
@@ -55,7 +43,6 @@
 #define CFG_TUSB_OS                  OPT_OS_NONE
 #endif
 
-// Debug activé pour voir si ça plante
 #undef CFG_TUSB_DEBUG
 #define CFG_TUSB_DEBUG           1
 
@@ -119,4 +106,4 @@
  }
 #endif
 
-#endif /* _TUSB_CONFIG_H_ */
+#endif
