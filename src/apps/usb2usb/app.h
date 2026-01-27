@@ -1,9 +1,3 @@
-// app.h - USB2USB App Manifest
-// USB to USB adapter (HID Gamepad output)
-//
-// This manifest declares what drivers and services this app needs.
-// The build system uses these flags to conditionally compile only required code.
-
 #ifndef APP_USB2USB_H
 #define APP_USB2USB_H
 
@@ -17,31 +11,28 @@
 #define APP_AUTHOR "RobertDaleSmith"
 
 // ============================================================================
-// CORE DEPENDENCIES (What drivers to compile in)
+// CORE DEPENDENCIES
 // ============================================================================
 
-// Input drivers
+// Indispensable pour activer le deuxième cœur (Core 1) pour le PIO-USB
 #define REQUIRE_USB_HOST 1
 #define MAX_USB_DEVICES 4
 
-// Output drivers
+// Indispensable pour le port de droite (Native USB)
 #define REQUIRE_USB_DEVICE 1
-#define USB_OUTPUT_PORTS 1             // Single gamepad for now (future: 4)
+#define USB_OUTPUT_PORTS 1
 
 // Services
-#define REQUIRE_FLASH_SETTINGS 0       // No profile persistence yet
-#define REQUIRE_PROFILE_SYSTEM 0       // No profiles yet
+#define REQUIRE_FLASH_SETTINGS 0
+#define REQUIRE_PROFILE_SYSTEM 0
 #define REQUIRE_PLAYER_MANAGEMENT 1
 
 // ============================================================================
 // ROUTING CONFIGURATION
 // ============================================================================
 #define ROUTING_MODE ROUTING_MODE_MERGE
-#define MERGE_MODE MERGE_BLEND          // Blend all USB inputs
+#define MERGE_MODE MERGE_BLEND
 #define APP_MAX_ROUTES 4
-
-// Input transformations
-// Mouse-to-analog: Maps mouse X to right stick X for accessibility (mouthpad, head tracker)
 #define TRANSFORM_FLAGS TRANSFORM_MOUSE_TO_ANALOG
 
 // ============================================================================
@@ -52,21 +43,24 @@
 #define AUTO_ASSIGN_ON_PRESS 1
 
 // ============================================================================
-// HARDWARE CONFIGURATION
+// HARDWARE CONFIGURATION (MODIFICATIONS ICI)
 // ============================================================================
-#define BOARD "ada_feather_usbhost"     // Feather has dual USB ports
-#define CPU_OVERCLOCK_KHZ 0             // No overclock needed
+
+// 1. CHANGE LA CARTE : "ada_feather_usbhost" n'a pas les mêmes pins que toi.
+#define BOARD "waveshare_rp2040_zero"
+
+// 2. FORCE L'OVERCLOCK : Le PIO-USB (port de gauche) est instable à 125MHz. 
+// Il faut impérativement 120MHz (120000) ou 240MHz (240000).
+#define CPU_OVERCLOCK_KHZ 120000
+
 #define UART_DEBUG 1
 
 // ============================================================================
 // APP FEATURES
 // ============================================================================
-#define FEATURE_PROFILES 0              // No profiles yet
-#define FEATURE_OUTPUT_MODE_SELECT 0    // Future: Switch between HID/XInput/PS3/etc
+#define FEATURE_PROFILES 0
+#define FEATURE_OUTPUT_MODE_SELECT 0
 
-// ============================================================================
-// APP INTERFACE (OS calls these)
-// ============================================================================
 void app_init(void);
 void app_task(void);
 
